@@ -21,6 +21,7 @@ import java.util.*;
 
 import org.eigenbase.sql.*;
 import org.eigenbase.sql.parser.impl.*;
+import org.eigenbase.sql.pretty.SqlPrettyWriter;
 import org.eigenbase.test.*;
 import org.eigenbase.util.*;
 import org.eigenbase.util14.*;
@@ -121,6 +122,17 @@ public class SqlParserTest {
             + "    <IDENTIFIER> ...\n"
             + "    <QUOTED_IDENTIFIER> ...\n"
             + ".*");
+    }
+
+    @Test public void testSqlOptions() throws SqlParseException {
+        SqlNode node = new SqlParser("alter system set schema = true").parseStmt();
+        SqlOptionSetter opt = (SqlOptionSetter) node;
+        assert opt.getScope().equalsIgnoreCase("system") : "scope parsed incorrectly in option set statement.";
+        assert opt.getName().equalsIgnoreCase("schema") : "option name parsed incorrectly in option set statement.";
+        SqlPrettyWriter writer = new SqlPrettyWriter(SqlDialect.EIGENBASE);
+        assert writer.format(opt.getVal()).equalsIgnoreCase("true");
+        writer = new SqlPrettyWriter(SqlDialect.EIGENBASE);
+        System.out.println(writer.format(opt));
     }
 
     @Test public void testInvalidToken() {
