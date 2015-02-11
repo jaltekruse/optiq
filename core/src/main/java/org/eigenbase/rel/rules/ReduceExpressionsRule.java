@@ -179,9 +179,7 @@ public abstract class ReduceExpressionsRule extends RelOptRule {
             call.transformTo(filter.getChild());
           } else {
             call.transformTo(
-                new EmptyRel(
-                    filter.getCluster(),
-                    filter.getRowType()));
+              createEmptyRelOrEquivalent(filter));
           }
         }
       }
