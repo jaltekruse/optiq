@@ -253,7 +253,7 @@ public abstract class ReduceExpressionsRule extends RelOptRule {
      * @param description - Description of rule, must be unique within planner.
      */
     protected ReduceCalcRule(String description) {
-      super(FilterRel.class, description);
+      super(CalcRel.class, description);
     }
 
     /**
